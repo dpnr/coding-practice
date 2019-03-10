@@ -15,8 +15,42 @@ class Node:
                 self.rightChild = child
             else:
                 self.rightChild.insertNode(child)
-            
-        
+
+class NodeR:
+    def __init__(self, data):
+        self.data = data
+        self.leftChild = None
+        self.rightChild = None
+        self.rightRightChild = None
+    
+    def insertNode(self, child):
+        if (self.data > child.data):
+            if (self.leftChild is None):
+                self.leftChild = child
+            else:
+                self.leftChild.insertNode(child)
+        else:
+            if (self.rightChild is None):
+                self.rightChild = child
+            else:
+                self.rightChild.insertNode(child)
+    
+    def getChildren(self):
+        retQueue = []
+        if (self.leftChild is not None):
+            retQueue.append(self.leftChild)
+        if (self.rightChild is not None):
+            retQueue.append(self.rightChild)
+        return retQueue
+    
+    def printPlease(self):
+        dataHere = str(self.data) if self is not None else 'None'
+        print("#### Node with data ####" + dataHere )
+        rightR = str(self.rightRightChild.data) if self.rightRightChild is not None else 'None' 
+        left = str(self.leftChild.data) if self.leftChild is not None else 'None'
+        right = str(self.rightChild.data) if self.rightChild is not None else 'None'
+        print("left : " + left + " right : " + right  + " rightRight : " + rightR )
+
 
 
 
@@ -56,3 +90,21 @@ def postOrderTraversal(node):
         postOrderTraversal(node.rightChild)
     print("node => " + str(node.data))
 
+# Returns a BSTR given a list of items(only integers)
+def returnBSTRight(items):
+    #create a root node first
+    root = NodeR(items.pop(0))
+    for item in items:
+        root.insertNode(NodeR(item))
+    return root
+
+
+def bfsPrint(queue):
+    if (len(queue) == 0):
+        return 
+    currentNode = queue.pop(0)
+
+    currentNode.printPlease()
+    queue.extend(currentNode.getChildren())
+    bfsPrint(queue)
+    
